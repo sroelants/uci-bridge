@@ -5,19 +5,21 @@ use axum::{routing::post, Router, extract::State};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let engine = Engine::new("stockfish", 200)?;
+    let engine_path = std::env::args()
+        .skip(1) // skip the program name
+        .next()
+        .ok_or(anyhow!("Please supply the path to your chess engine binary"))?;
+    
+    let engine = Engine::new(&engine_path, 200)?;
     let state = Arc::new(Mutex::new(engine));
 
-    // build our application with a single route
     let app = Router::new()
         .route("/", post(uci_handler))
         .with_state(state);
 
-    // run it with hyper on localhost:3000
-    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+    axum::Server::bind(&"0.0.0.0:3000".parse()?)
         .serve(app.into_make_service())
-        .await
-        .unwrap();
+        .await?;
 
     Ok(())
 }
