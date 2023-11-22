@@ -2,14 +2,14 @@
 Run the bridge, passing the binary of a chess engine as the argument (either a binary in your
 `$PATH`, or the path to the executable)
 
-```sh
+```
 $ uci-bridge stockfish
 ```
 
 This starts a server listening on `localhost:3000` that relays any uci commands
 you give it and pipes the output back to you
 
-```sh
+```
 $ curl -X POST --data "uci" http://127.0.0.1:3000
 Stockfish 16 by the Stockfish developers (see AUTHORS file)
 id name Stockfish 16
@@ -36,5 +36,5 @@ option name Syzygy50MoveRule type check default true
 option name SyzygyProbeLimit type spin default 7 min 0 max 7
 option name Use NNUE type check default true
 option name EvalFile type string default nn-5af11540bbfe.nnue
-uciok⏎
+uciok
 ```
